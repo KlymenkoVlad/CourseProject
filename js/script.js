@@ -104,51 +104,51 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Modal -----------------------------------
 
-    // const modalBtnContact = document.querySelectorAll('[data-modal]'),
-    //       modalBtnCloseContact = document.querySelector('[data-close]'),
-    //       modal = document.querySelector('.modal');
+    const modalBtnContact = document.querySelectorAll('[data-modal]'),
+          modalBtnCloseContact = document.querySelector('[data-close]'),
+          modal = document.querySelector('.modal');
 
-    // function openModal() {
-    //     modal.classList.add('show');
-    //     modal.classList.remove('hide');
-    //     document.body.style.overflow = 'hidden';
-    //     clearInterval(modalTimerId);
-    // }
+    function openModal() {
+        modal.classList.add('show');
+        modal.classList.remove('hide');
+        document.body.style.overflow = 'hidden';
+        clearInterval(modalTimerId);
+    }
 
-    // function closeModal() {
-    //     modal.classList.add('hide');
-    //     modal.classList.remove('show');
-    //     document.body.style.overflow = '';
-    // }
+    function closeModal() {
+        modal.classList.add('hide');
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    }
 
-    // modalBtnContact.forEach(btn => {
-    //     btn.addEventListener('click', openModal);
-    // });
+    modalBtnContact.forEach(btn => {
+        btn.addEventListener('click', openModal);
+    });
     
-    // modalBtnCloseContact.addEventListener('click', closeModal);
+    modalBtnCloseContact.addEventListener('click', closeModal);
 
-    // modal.addEventListener('click', (e) => {
-    //     if (e.target === modal) {
-    //         closeModal();
-    //     }
-    // });
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
 
-    // document.addEventListener('keydown', (e) => {
-    //     if (e.code === 'Escape' && modal.classList.contains('show')) {
-    //         closeModal();
-    //     }
-    // });
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Escape' && modal.classList.contains('show')) {
+            closeModal();
+        }
+    });
     
-    // const modalTimerId = setTimeout(openModal, 10000);
+    const modalTimerId = setTimeout(openModal, 10000);
 
-    // function showModalByScroll() {
-    //     if (window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight -1) {
-    //         openModal();
-    //         window.removeEventListener('scroll', showModalByScroll);
-    //     }
-    // }
+    function showModalByScroll() {
+        if (window.scrollY + document.documentElement.clientHeight >= document.documentElement.scrollHeight -1) {
+            openModal();
+            window.removeEventListener('scroll', showModalByScroll);
+        }
+    }
 
-    // window.addEventListener('scroll', showModalByScroll);
+    window.addEventListener('scroll', showModalByScroll);
 
     //window -----------------------------
 
@@ -203,7 +203,7 @@ window.addEventListener('DOMContentLoaded', () => {
         8,
         '.menu .container',
         'menu__item',
-        ).render();
+    ).render();
 
     new CardsByClass(
         "img/tabs/elite.jpg",
@@ -213,7 +213,7 @@ window.addEventListener('DOMContentLoaded', () => {
         20,
         '.menu .container',
         'menu__item',
-        ).render();
+    ).render();
 
     new CardsByClass(
         "img/tabs/post.jpg",
@@ -223,6 +223,59 @@ window.addEventListener('DOMContentLoaded', () => {
         16,
         '.menu .container',
         'menu__item',
-        ).render();
+    ).render();
 
+    // Forms
+
+    const forms = document.querySelectorAll('form');
+
+    const message = {
+        loading: 'Загрузка',
+        succes: 'Спасибо! Скоро мы с вами свяжемся',
+        failure: 'Что-то пошло не так...'
+    };
+
+    forms.forEach(item => {
+        postData(item);
+    });
+
+    function postData(form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const statusMessage = document.createElement('div');
+            statusMessage.classList.add('status');
+            statusMessage.textContent = message.loading;
+            form.append(statusMessage);
+
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+
+            request.setRequestHeader('Content-type', 'application/json'); //когда присутсвует XMLHttpRequest + объекта + формдейта - заголовок не нужен
+            const formData = new FormData(form); 
+
+            const object = {};
+            formData.forEach(function(value, key){
+                object[key] = value;
+            });
+
+            const json = JSON.stringify(object);
+
+            request.send(json);
+            // request.send(formData);
+
+            request.addEventListener('load', () => {
+                if (request.status === 200) {
+                    console.log(request.response);
+                    statusMessage.textContent = message.succes;
+                    form.reset();
+                    setTimeout(() => {
+                        statusMessage.remove();
+                    }, 2000);
+                } else {
+                    statusMessage.textContent = message.failure;
+                }
+            });
+        });
+    }
 });
