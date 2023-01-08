@@ -239,6 +239,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //!----------------------------------------------
 
+    //!3 способ, с либой axios
+
+    // axios.get('http://localhost:3000/menu')
+    //     .then(data => {            
+    //         data.data.forEach(({img, altimg, title, descr, price}) => {
+    //         new CardsByClass(img, altimg, title, descr, price, '.menu .container').render();
+    //     });
+    // });
+
     // Forms --------------------------------------------------------------------------
 
     const forms = document.querySelectorAll('form');
@@ -319,7 +328,4 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
-    fetch('http://localhost:3000/menu')
-        .then(data => data.json())
-        .then(res => console.log(res));
 });
