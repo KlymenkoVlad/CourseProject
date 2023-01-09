@@ -328,4 +328,110 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
+    // Slider
+
+    const sliderImg = document.querySelectorAll('.offer__slide'),
+          sliderPrevBtn = document.querySelector('.offer__slider-prev'),
+          sliderNextBtn = document.querySelector('.offer__slider-next'),
+          sliderTotalNum = document.querySelector('#total'),
+          sliderCurrNum = document.querySelector('#current');
+    let   slideIndex = 1;
+
+    if (sliderImg.length < 10) {
+        sliderTotalNum.textContent = `0${sliderImg.length}`;
+    } else {
+        sliderTotalNum.textContent = sliderImg.length;
+    }
+
+    function hideSliderImg() {
+        for (let i = 0; i < sliderImg.length; i++) {
+            sliderImg[i].classList.add('hide');
+            sliderImg[i].classList.remove('show', 'fade');
+        }
+    }
+
+    function showSliderImg(n) {
+          
+        hideSliderImg();
+        
+        if (sliderImg[n]) {
+            sliderImg[n].classList.add('show', 'fade');
+            sliderImg[n].classList.remove('hide');   
+        }
+
+        if (slideIndex < 10) {
+            sliderCurrNum.textContent = `0${slideIndex}`;
+        } else {
+            sliderCurrNum.textContent = slideIndex;
+        }
+    }
+
+    showSliderImg(slideIndex - 1);
+
+    sliderNextBtn.addEventListener('click', () => {
+        sliderCurrNum.textContent = (++slideIndex);
+
+        if (slideIndex > sliderImg.length) {
+            slideIndex = 1;
+        }
+
+        showSliderImg(slideIndex - 1);
+    });
+
+    sliderPrevBtn.addEventListener('click', () => {
+        sliderCurrNum.textContent = (--slideIndex);
+
+        if (slideIndex < 1) {
+            slideIndex = sliderImg.length;
+        }
+
+        showSliderImg(slideIndex - 1);
+    });
+
+    // let slideIndex = 1;
+    // const slides = document.querySelectorAll('.offer__slide'),
+    //     prev = document.querySelector('.offer__slider-prev'),
+    //     next = document.querySelector('.offer__slider-next'),
+    //     total = document.querySelector('#total'),
+    //     current = document.querySelector('#current');
+
+    // showSlides(slideIndex);
+
+    // if (slides.length < 10) {
+    //     total.textContent = `0${slides.length}`;
+    // } else {
+    //     total.textContent = slides.length;
+    // }
+
+    // function showSlides(n) {
+    //     if (n > slides.length) {
+    //         slideIndex = 1;
+    //     }
+    //     if (n < 1) {
+    //         slideIndex = slides.length;
+    //     }
+
+    //     slides.forEach((item) => item.style.display = 'none');
+
+    //     slides[slideIndex - 1].style.display = 'block'; // Как ваша самостоятельная работа - переписать на использование классов show/hide
+        
+    //     if (slides.length < 10) {
+    //         current.textContent =  `0${slideIndex}`;
+    //     } else {
+    //         current.textContent =  slideIndex;
+    //     }
+    // }
+
+    // function plusSlides (n) {
+    //     showSlides(slideIndex += n);
+    // }
+
+    // prev.addEventListener('click', function(){
+    //     plusSlides(-1);
+    // });
+
+    // next.addEventListener('click', function(){
+    //     plusSlides(1);
+    // });
+
 });
