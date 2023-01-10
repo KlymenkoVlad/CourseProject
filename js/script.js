@@ -53,7 +53,7 @@ window.addEventListener('DOMContentLoaded', () => {
             minutes = 0;
             seconds = 0;
         } else {
-            days = Math.floor(t / (1000 * 60 * 60 * 24)); /* 10000 миллисекунд на 60 - одна минута*/
+            days = Math.floor(t / (1000 * 60 * 60 * 24)); /* 1000 миллисекунд на 60 - одна минута*/
             hours = Math.floor((t / (1000 * 60 * 60) % 24));
             minutes = Math.floor((t / 1000 / 60) % 60);
             seconds = Math.floor((t / 1000) % 60);
@@ -419,11 +419,15 @@ window.addEventListener('DOMContentLoaded', () => {
         dots[slideIndex - 1].style.opacity = 1;
     }
 
+    function wordDel (property) {
+        return +property.replace(/\D/g, '');
+    }
+
     next.addEventListener('click', () => {
-        if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+        if (offset == wordDel(width) * (slides.length - 1)) {
             offset = 0;
         } else {
-            offset += +width.slice(0, width.length - 2);
+            offset += wordDel(width);
         }
 
         slidesField.style.transform = `translateX(-${offset}px)`;
@@ -441,9 +445,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
     prev.addEventListener('click', () => {
         if (offset == 0) {
-            offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+            offset = wordDel(width) * (slides.length - 1);
         } else {
-            offset -= +width.slice(0, width.length - 2);
+            offset -= wordDel(width);
         }
 
         slidesField.style.transform = `translateX(-${offset}px)`;
@@ -464,7 +468,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const slideTo = e.target.getAttribute('data-slide-to');
 
             slideIndex = slideTo;
-            offset = +width.slice(0, width.length - 2) * (slideTo - 1);
+            offset = wordDel(width) * (slideTo - 1);
             
             slidesField.style.transform = `translateX(-${offset}px)`;
 
