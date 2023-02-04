@@ -1,1 +1,1 @@
-Project from Course without using react, just native js
+Project from Course using native js
